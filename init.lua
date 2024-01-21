@@ -1,4 +1,7 @@
 require "base"
+require "config/keymaps"
+require "helper"
+
 vim.loader.enable()
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -58,3 +61,18 @@ local function open_nvim_tree()
 end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+
+-- 不可視文字の表示
+vim.opt.list = true
+vim.opt.listchars = {
+    tab = ">>",
+    trail = "-",
+    nbsp = "+",
+}
+
+-- 常にインサートモードでTerminalを開く
+vim.api.nvim_create_autocmd({ "TermOpen" }, { 
+  group = vim.api.nvim_create_augroup("AutoCommands", {}),
+  pattern = { "term://*" },
+  command = "startinsert",
+})
